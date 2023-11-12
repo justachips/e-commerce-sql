@@ -8,6 +8,7 @@ $db = new PDO('mysql:host=localhost;dbname=mydatabase77', 'tfgi', 'azerty');
 
 
 $db->query("
+    DELETE FROM payements;
     DELETE FROM addresses;
     DELETE FROM users;
     DELETE FROM products;
