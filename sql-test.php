@@ -6,10 +6,14 @@ $faker = Faker\Factory::create();
 
 $db = new PDO('mysql:host=localhost;dbname=mydatabase77', 'tfgi', 'azerty');
 
-$db->query("DELETE FROM users
+
+$db->query("
+    DELETE FROM addresses;
+    DELETE FROM users;
+    DELETE FROM products;
+    ALTER TABLE users AUTO_INCREMENT = 1;
+    ALTER TABLE products AUTO_INCREMENT = 1;
 ");
-
-
 foreach(range(1,20) as $x) {
 
 
@@ -27,6 +31,8 @@ VALUES(
 '{$faker->email}',
 '{$faker->password}');
 ");
+
+$user_id = $db->lastInsertId(); //recupere le user_id 
 
 
 $db->query("INSERT INTO products (
@@ -46,22 +52,25 @@ VALUES(
 '{$faker->colorName}');
 ");
 
-#e
-// $db->query("INSERT INTO addresses (
-//     Address_Address,
-//     Address_CityName,
-//     Address_PostalCode,
-//     Address_State,
-//     Address_Country
-//     )
-//     VALUES(
-//     '{$faker->address}',
-//     '{$faker->cityName}',
-//     '{$faker->postcode}',
-//     '{$faker->state}',
-//     '{$faker->country}');
-//     ");
+$product_id = $db->lastInsertId(); //recupere le product id
 
+
+$db->query("INSERT INTO addresses (
+    User_Id,
+    Address_Address,
+    Address_CityName,
+    Address_PostalCode,
+    Address_State,
+    Address_Country
+    )
+    VALUES(
+    '{$user_id}',
+    '{$faker->address}',
+    '{$faker->city}',
+    '{$faker->postcode}',
+    '{$faker->state}',
+    '{$faker->country}');
+    ");
 
 }
 ?>
