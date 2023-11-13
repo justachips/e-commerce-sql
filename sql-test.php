@@ -6,17 +6,25 @@ $faker = Faker\Factory::create();
 
 $db = new PDO('mysql:host=localhost;dbname=mydatabase77', 'tfgi', 'azerty');
 
+ini_set('max_execution_time', 300); // Définit le temps d'exécution maximal à 300 secondes (par exemple)
+
+ini_set('memory_limit', '256M'); // Définit la limite mémoire à 256 Mo (par exemple)
+
 
 $db->query("
+    DELETE FROM rates;
     DELETE FROM payements;
     DELETE FROM addresses;
     DELETE FROM users;
     DELETE FROM products;
     ALTER TABLE users AUTO_INCREMENT = 1;
     ALTER TABLE products AUTO_INCREMENT = 1;
+    ALTER TABLE rates AUTO_INCREMENT = 1;
 ");
 
-foreach(range(1,20) as $x) {
+$counter=0;
+
+for ($i = 0; $i = 20; $i++) {
 
 
     $db->query("INSERT INTO users (
@@ -75,9 +83,7 @@ foreach(range(1,20) as $x) {
         '{$faker->state}',
         '{$faker->country}'
         );
-    ");
-
-    $db->query("
+   
         INSERT INTO payements (
             User_Id,
             Payement_CartNumber,
@@ -94,26 +100,53 @@ foreach(range(1,20) as $x) {
         );
     ");
 
-    
-    // $db->query("
-    //     INSERT INTO payements (
-    //         User_Id
-    //         Payement_CartNumber
-    //         Payement_ExpirationDate
-    //         Payement_Name
-    //         Payement_SafeCode
-    //         )
-    //     VALUES(
-    //     '{$user_id}',
-    //     '{$faker->randomNumber()}',
-    //     '{$faker->date($format = 'Y-m-d', $max = 'now')}',
-    //     '{$faker->lastName()}',
-    //     '{$faker->randomNumber()}'
-    //     );
-    // ");
+    $counter+= 1;
+
+    $user_id_rand = $faker->numberBetween(1, $counter);
+    $produit_id_rand = $faker->numberBetween(1, $counter);
+
+    $db->query("INSERT INTO rates (
+        User_Id,
+        Product_Id,
+        Rate_Rate
+        )
+        VALUES(
+        '{$user_id_rand}',
+        '{$produit_id_rand}',
+        '{$faker->numberBetween(0, 5)}'
+        );
+    ");
 
 
 
 }
+
+// // Supprimer les données existantes
+// $db->query("DELETE FROM avis");
+
+// // Générer de fausses données pour les avis
+// foreach (range(1, 20) as $x) {
+//     // Sélectionnez un utilisateur au hasard
+//     $user_id = $faker->numberBetween(1, 20); // Assurez-vous que cela ne dépasse pas le nombre d'utilisateurs que vous avez
+
+//     // Sélectionnez un produit au hasard
+//     $produit_id = $faker->numberBetween(1, 50); // Assurez-vous que cela ne dépasse pas le nombre de produits que vous avez
+
+//     // Générez un faux commentaire
+//     $commentaire = $faker->paragraph;
+
+//     // Générez une note (par exemple, sur 5)
+//     $note = $faker->numberBetween(1, 5);
+
+//     // Insérez l'avis dans la table "avis"
+//     $db->query("INSERT INTO avis (user_id, produit_id, commentaire, note)
+//                 VALUES ('$user_id', '$produit_id', '$commentaire', '$note')");
+// }
+
+
+
+
+
+
 
 ?>
