@@ -12,6 +12,7 @@ ini_set('memory_limit', '256M'); // Définit la limite mémoire à 256 Mo (par e
 
 
 $db->query("
+    DELETE FROM photos;
     DELETE FROM rates;
     DELETE FROM payements;
     DELETE FROM addresses;
@@ -20,6 +21,7 @@ $db->query("
     ALTER TABLE users AUTO_INCREMENT = 1;
     ALTER TABLE products AUTO_INCREMENT = 1;
     ALTER TABLE rates AUTO_INCREMENT = 1;
+    ALTER TABLE photos AUTO_INCREMENT = 1;
 ");
 
 $counter=0;
@@ -117,36 +119,34 @@ for ($i = 0; $i = 20; $i++) {
         );
     ");
 
+    $randbool = $faker->numberBetween(1, 2);
 
+    echo $randbool;
+
+    $blob = $faker->city . '.jpeg';
+
+    if ($randbool > 1) {
+        $db->query("INSERT INTO photos (
+            User_Id,
+            Photo_photo
+            )
+            VALUES(
+            '{$user_id_rand}',
+            '{$blob}'
+            );
+        ");
+    } else {
+        $db->query("INSERT INTO photos (
+            Product_Id,
+            Photo_photo
+            )
+            VALUES(
+            '{$produit_id_rand}',
+            '{$blob}'
+            );
+        ");
+    }
 
 }
-
-// // Supprimer les données existantes
-// $db->query("DELETE FROM avis");
-
-// // Générer de fausses données pour les avis
-// foreach (range(1, 20) as $x) {
-//     // Sélectionnez un utilisateur au hasard
-//     $user_id = $faker->numberBetween(1, 20); // Assurez-vous que cela ne dépasse pas le nombre d'utilisateurs que vous avez
-
-//     // Sélectionnez un produit au hasard
-//     $produit_id = $faker->numberBetween(1, 50); // Assurez-vous que cela ne dépasse pas le nombre de produits que vous avez
-
-//     // Générez un faux commentaire
-//     $commentaire = $faker->paragraph;
-
-//     // Générez une note (par exemple, sur 5)
-//     $note = $faker->numberBetween(1, 5);
-
-//     // Insérez l'avis dans la table "avis"
-//     $db->query("INSERT INTO avis (user_id, produit_id, commentaire, note)
-//                 VALUES ('$user_id', '$produit_id', '$commentaire', '$note')");
-// }
-
-
-
-
-
-
 
 ?>
