@@ -1,14 +1,11 @@
 <?php
 
-require('vendor/autoload.php');
+require_once('vendor/autoload.php');
 
 $faker = Faker\Factory::create();
 
 $db = new PDO('mysql:host=localhost;dbname=mydatabase77', 'tfgi', 'azerty');
 
-ini_set('max_execution_time', 300); // Définit le temps d'exécution maximal à 300 secondes (par exemple)
-
-ini_set('memory_limit', '256M'); // Définit la limite mémoire à 256 Mo (par exemple)
 
 
 $db->query("
@@ -33,9 +30,9 @@ $db->query("
 
 $counter=0;
 
-for ($i = 0; $i = 30; $i++) {
+for ($i = 0; $i = 100; $i++) {
 
-
+    $hash = password_hash($faker->password, PASSWORD_DEFAULT);
     $db->query("INSERT INTO users (
         User_FirstName,
         User_LastName,
@@ -48,7 +45,7 @@ for ($i = 0; $i = 30; $i++) {
         '{$faker->lastName()}',
         '{$faker->phoneNumber}',
         '{$faker->email}',
-        '{$faker->password}'
+        '{$hash}'
         );
     ");
 
