@@ -33,7 +33,7 @@ $db->query("
 
 $counter=0;
 
-for ($i = 0; $i = 20; $i++) {
+for ($i = 0; $i = 30; $i++) {
 
 
     $db->query("INSERT INTO users (
@@ -61,7 +61,7 @@ for ($i = 0; $i = 20; $i++) {
         Product_Type,
         Product_Price,
         Product_NumberLeft,
-        Product_Available
+        Product_TotalRate
         )
         VALUES(
         '{$faker->domainWord}',
@@ -69,7 +69,7 @@ for ($i = 0; $i = 20; $i++) {
         '{$faker->colorName}',
         '{$faker->randomNumber()}',
         '{$faker->randomNumber()}',
-        '{$faker->colorName}'
+        '{$faker->numberBetween(0, 5)}'
         );
     ");
 
@@ -173,14 +173,19 @@ for ($i = 0; $i = 20; $i++) {
 
     $db->query("INSERT INTO carts (
         Shoplist_Id,
-        Product_Id
+        Product_Id,
+        Cart_Total,
+        Cart_ProductCount
         )
         VALUES(
         '{$shoplist_id_rand}',
-        '{$product_id_rand}'
+        '{$product_id_rand}',
+        '{$faker->numberBetween(5, 500)}',
+        '{$faker->numberBetween(0, 36)}'
         );
+    ");
 
-        INSERT INTO commands (
+    $db->query("INSERT INTO commands (
         Shoplist_Id,
         Command_OrderDate
         )
@@ -189,15 +194,19 @@ for ($i = 0; $i = 20; $i++) {
        '{$mydate}'
        );
     ");
+    
+
 
     $command_id = $db->lastInsertId(); //recupere le command id
     
         
     $db->query("INSERT INTO invoices (
-        Command_Id
+        Command_Id,
+        Invoice_Date
         )
         VALUES(
-        '{$command_id}'
+        '{$command_id}',
+        '{$faker->date($format = 'Y-m-d', $max = 'now')}'
        );
     ");
 
