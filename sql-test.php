@@ -12,6 +12,7 @@ ini_set('memory_limit', '256M'); // Définit la limite mémoire à 256 Mo (par e
 
 
 $db->query("
+    DELETE FROM shoplists;
     DELETE FROM photos;
     DELETE FROM rates;
     DELETE FROM payements;
@@ -22,6 +23,7 @@ $db->query("
     ALTER TABLE products AUTO_INCREMENT = 1;
     ALTER TABLE rates AUTO_INCREMENT = 1;
     ALTER TABLE photos AUTO_INCREMENT = 1;
+    ALTER TABLE shoplists AUTO_INCREMENT = 1;
 ");
 
 $counter=0;
@@ -104,6 +106,8 @@ for ($i = 0; $i = 20; $i++) {
 
     $counter+= 1;
 
+
+
     $user_id_rand = $faker->numberBetween(1, $counter);
     $produit_id_rand = $faker->numberBetween(1, $counter);
 
@@ -118,6 +122,7 @@ for ($i = 0; $i = 20; $i++) {
         '{$faker->numberBetween(0, 5)}'
         );
     ");
+
 
     $randbool = $faker->numberBetween(1, 2);
 
@@ -146,6 +151,16 @@ for ($i = 0; $i = 20; $i++) {
             );
         ");
     }
+    
+    $db->query("INSERT INTO shoplists (
+        User_Id
+        )
+        VALUES(
+        '{$user_id}'
+        );
+    ");
+
+
 
 }
 
